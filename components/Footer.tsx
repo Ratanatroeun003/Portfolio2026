@@ -33,32 +33,32 @@ export default function Footer() {
 
           {/* Social */}
           <div className="flex items-center gap-4">
-            <Link
-              href="https://github.com/"
+            <a
+              href="https://github.com/Ratanatroeun003"
               target="_blank"
               className="bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 p-3 rounded-xl text-gray-300 hover:text-blue-400 transition-all duration-300"
             >
               <Code size={20} />
-            </Link>
+            </a>
 
-            <Link
-              href="https://facebook.com/"
+            <a
+              href="https://www.facebook.com/share/18dBc1vvT5/?mibextid=wwXIfr"
               target="_blank"
               className="bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 p-3 rounded-xl text-gray-300 hover:text-blue-400 transition-all duration-300"
             >
               <FaFacebookMessenger size={20} />
-            </Link>
+            </a>
 
-            <Link
-              href="https://t.me/"
+            <a
+              href="https://t.me/TroeunRatana"
               target="_blank"
               className="bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 p-3 rounded-xl text-gray-300 hover:text-blue-400 transition-all duration-300"
             >
               <BiLogoTelegram size={20} />
-            </Link>
+            </a>
 
             <Link
-              href="mailto:your@email.com"
+              href="mailto:ratanatroeun@email.com"
               className="bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/30 p-3 rounded-xl text-gray-300 hover:text-blue-400 transition-all duration-300"
             >
               <Mail size={20} />
