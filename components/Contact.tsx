@@ -16,16 +16,32 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const handleSubmit = async () => {
+    if (!form.name || !form.message || !form.message) {
+      alert('all field are required');
+      return;
+    }
     setLoading(true);
-    await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    setLoading(false);
-    setSent(true);
+    try {
+      const res = await fetch('api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+        setForm({ name: '', email: '', message: '' });
+      } else {
+        alert('error processing');
+      }
+    } catch (error) {
+      console.log('====================================');
+      console.log('error server');
+      console.log('====================================');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
