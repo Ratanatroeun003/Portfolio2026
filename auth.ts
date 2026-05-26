@@ -1,8 +1,5 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-
-import { prisma } from '@/lib/prisma';
-
 export const {
   handlers,
   auth,
@@ -31,31 +28,44 @@ export const {
           return null;
         }
 
-        const admin =
-          await prisma.admin.findUnique({
-            where: {
-              email:
-                credentials.email as string,
-            },
-          });
-
-        if (!admin) return null;
-
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        const adminName = process.env.ADMIN_NAME;
+        console.log("--- DEBUG AUTH ---");
+       console.log("Input Email:", credentials.email, " | Env Email:", adminEmail);
+  console.log("Input Pass:", credentials.password, " | Env Pass:", adminPassword);
+  console.log("------------------");
         if (
-          admin.password !==
-          credentials.password
+          credentials.email !==adminEmail ||
+          credentials.password !== adminPassword
         ) {
           return null;
         }
 
         return {
-          id: admin.id.toString(),
-          email: admin.email,
+          id: '1',
+          email: String(adminEmail),
+          name: String(adminName),
         };
       },
     }),
   ],
-
+callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.name = token.name;
+        session.user.email = token.email;
+      }
+      return session;
+    },
+  },
   session: {
     strategy: 'jwt',
     maxAge:2*24*60*60,

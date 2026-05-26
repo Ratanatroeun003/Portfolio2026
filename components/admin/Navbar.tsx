@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { Session } from 'next-auth';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
@@ -12,8 +13,11 @@ import {
   X,
   LogOut,
 } from 'lucide-react';
+interface NavbarProps {
+  session: Session | null;
+}
 
-const Navbar = () => {
+const Navbar = ({ session }: NavbarProps) => {
   const links = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
@@ -60,7 +64,9 @@ const Navbar = () => {
             <LayoutDashboard size={22} className="text-white" />
           </div>
           <div>
-            <h1 className="text-white font-bold text-xl">Admin Panel</h1>
+            <h1 className="text-white font-bold text-xl">
+              {session?.user?.name || 'admin'}
+            </h1>
             <p className="text-gray-400 text-sm">Portfolio Dashboard</p>
           </div>
         </div>
@@ -102,7 +108,7 @@ const Navbar = () => {
 
         {/* Logout */}
         <button
-          onClick={() => signOut({ callbackUrl: '/login' })}
+          onClick={() => signOut({ callbackUrl: '/auth' })}
           className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 py-3 rounded-xl text-white transition-colors w-full"
         >
           <LogOut size={18} />
