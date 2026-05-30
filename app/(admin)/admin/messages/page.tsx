@@ -75,12 +75,6 @@ export default async function MessagesPage() {
 
                   <p className="text-xs text-blue-400 mb-1">{message.email}</p>
 
-                  {message.subject && (
-                    <p className="text-xs font-medium text-gray-300 mb-1">
-                      {message.subject}
-                    </p>
-                  )}
-
                   <p className="text-sm text-gray-400 line-clamp-2">
                     {message.body}
                   </p>
