@@ -16,17 +16,10 @@ export const login = async (
 ): Promise<LoginState> => {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
-  console.log("--- SERVER ACTION CHECK ---");
-  console.log("Received Email:", email);
-  console.log("Received Password:", password);
-  console.log("---------------------------");
-
   const errors: LoginErrors = {};
-
   if (!email) errors.email = "Please fill email";
   if (!password) errors.password = "Please fill password";
   if (Object.keys(errors).length > 0) return { errors };
-
   try {
     await signIn("credentials", {
       email,
@@ -37,9 +30,9 @@ export const login = async (
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { errors: { global: "Invalid email or password" } }; // ✅
+          return { errors: { global: "Invalid email or password" } };
         default:
-          return { errors: { global: "System error!" } }; // ✅
+          return { errors: { global: "System error!" } };
       }
     }
     throw error;

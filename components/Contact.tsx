@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-
+import { useActionState, useState, useEffect } from 'react';
+import { createMessage } from '@/app/(admin)/admin/messages/_actions/message';
 import {
   Mail,
   Phone,
@@ -13,43 +13,21 @@ import { BiLogoTelegram } from 'react-icons/bi';
 import { FaFacebookF } from 'react-icons/fa';
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const handleSubmit = async () => {
-    if (!form.name || !form.message || !form.message) {
-      alert('all field are required');
-      return;
+  const [state, formAction, isPending] = useActionState(createMessage, null);
+  const [isSent, setIsSent] = useState(false);
+  useEffect(() => {
+    if (state?.success) {
+      setIsSent(true);
     }
-    setLoading(true);
-    try {
-      const res = await fetch('api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSent(true);
-        setForm({ name: '', email: '', message: '' });
-      } else {
-        alert('error processing');
-      }
-    } catch (error) {
-      console.log('====================================');
-      console.log('error server');
-      console.log('====================================');
-    } finally {
-      setLoading(false);
-    }
+  }, [state]);
+  const handleResetForm = () => {
+    setIsSent(false);
   };
-
   return (
     <section
       id="contact"
       className="min-h-screen flex flex-col justify-center px-4 py-24"
     >
-      {/* Title */}
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
           CONTACT <span className="text-blue-400">ME</span>
@@ -59,10 +37,7 @@ export default function Contact() {
         </p>
         <div className="w-16 h-1 bg-blue-400 rounded-full mx-auto mt-4" />
       </div>
-
-      {/* Content */}
       <div className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left - Contact Info */}
         <div className="flex flex-col gap-6 justify-center">
           <h3 className="text-xl sm:text-2xl font-semibold text-white">
             តោះទាក់ទងគ្នា!
@@ -158,8 +133,11 @@ export default function Contact() {
         </div>
 
         {/* Right - Form */}
-        <div className="bg-gray-800/50 rounded-2xl p-6 sm:p-8">
-          {sent ? (
+        <form
+          action={formAction}
+          className="bg-gray-800/50 rounded-2xl p-6 sm:p-8"
+        >
+          {state?.success ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 py-12">
               <CheckCircle size={60} className="text-green-400" />
               <p className="text-green-400 text-xl font-semibold text-center">
@@ -169,7 +147,7 @@ export default function Contact() {
                 ខ្ញុំនឹងឆ្លើយតបក្នុងពេលឆាប់ៗ!
               </p>
               <button
-                onClick={() => setSent(false)}
+                onClick={handleResetForm}
                 className="mt-4 text-blue-400 hover:text-blue-300 text-sm underline transition-colors"
               >
                 ផ្ញើម្តងទៀត
@@ -177,6 +155,11 @@ export default function Contact() {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
+              {state?.error && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg text-center">
+                  {state.message}
+                </div>
+              )}
               {/* Name */}
               <div className="flex flex-col gap-1">
                 <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
@@ -190,13 +173,11 @@ export default function Contact() {
                   <input
                     type="text"
                     placeholder="Your Name"
+                    name="name"
                     className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
                   />
                 </div>
               </div>
-
-              {/* Email */}
               <div className="flex flex-col gap-1">
                 <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
                   Email
@@ -208,16 +189,12 @@ export default function Contact() {
                   />
                   <input
                     type="email"
+                    name="email"
                     placeholder="your@email.com"
                     className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
                   />
                 </div>
               </div>
-
-              {/* Message */}
               <div className="flex flex-col gap-1">
                 <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
                   Message
@@ -231,23 +208,19 @@ export default function Contact() {
                     placeholder="Your message..."
                     rows={4}
                     className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all resize-none"
-                    onChange={(e) =>
-                      setForm({ ...form, message: e.target.value })
-                    }
+                    name="message"
                   />
                 </div>
               </div>
-
-              {/* Submit Button */}
               <button
-                onClick={handleSubmit}
-                disabled={loading}
+                type="submit"
+                disabled={isPending}
                 className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 py-3 rounded-lg font-semibold transition-colors text-white mt-2"
               >
-                {loading ? (
+                {isPending ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    កំពុងផ្ញើ...
+                    sending...
                   </>
                 ) : (
                   <>
@@ -258,7 +231,7 @@ export default function Contact() {
               </button>
             </div>
           )}
-        </div>
+        </form>
       </div>
     </section>
   );

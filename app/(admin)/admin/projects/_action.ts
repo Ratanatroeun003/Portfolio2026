@@ -4,8 +4,6 @@ import { revalidatePath } from "next/cache";
 import { prisma } from '@/lib/prisma'
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { redirect } from "next/navigation";
-
-// ➕ ១. MUXងារ CREATE PROJECTS
 export async function createProjects(prevState: any, formData: FormData) {
   const title = formData.get('title') as string | null;
   const description = formData.get('description') as string | null;
@@ -21,14 +19,11 @@ export async function createProjects(prevState: any, formData: FormData) {
 
   try {
     let imageUrl = '/placeholder.jpg';
-
-    // ☁️ ហៅមុខងារ Upload ទៅ Cloudinary ពីលើយន្តហោះ Server ផ្ទាល់
     if (file && file.size > 0) {
       imageUrl = await uploadToCloudinary(file);
     } else {
       return { error: 'សូមជ្រើសរើសរូបភាព Thumbnail របស់ Project ផង!' };
     }
-
     await prisma.project.create({
       data: {
         title: String(title),
@@ -42,12 +37,9 @@ export async function createProjects(prevState: any, formData: FormData) {
     console.error('Prisma insert error inside Server Action:', error);
     return { error: 'មិនអាចរក្សាទុកទិន្នន័យចូលក្នុង Database បានឡើយ!' };
   }
-
   revalidatePath('/admin/projects');
   redirect('/admin/projects');
 }
-
-// ❌ ២. MUXងារ DELETE PROJECT
 export async function deleteProject(id: number) {
   try {
     await prisma.project.delete({
@@ -61,8 +53,6 @@ export async function deleteProject(id: number) {
     return { success: false, error: 'មិនអាចលុបគម្រោងនេះបានទេ!' };
   }
 }
-
-// 📝 ៣. MUXងារ UPDATE PROJECT
 export async function updateProject(prevState: any, formData: FormData) {
   const id = Number(formData.get('id'));
   const title = formData.get('title') as string | null;

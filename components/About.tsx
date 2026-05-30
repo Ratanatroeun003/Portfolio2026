@@ -75,8 +75,8 @@ export default function About() {
           <div className="grid grid-cols-3 gap-4 mt-2">
             {[
               { label: 'Projects', value: '10+' },
-              { label: 'Experience', value: '2yr' },
-              { label: 'Clients', value: '5+' },
+              { label: 'Experience', value: '0' },
+              { label: 'Clients', value: '0' },
             ].map((stat) => (
               <div
                 key={stat.label}

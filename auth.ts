@@ -1,5 +1,7 @@
+// auth.ts
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+
 export const {
   handlers,
   auth,
@@ -13,30 +15,29 @@ export const {
           label: 'Email',
           type: 'email',
         },
-
         password: {
           label: 'Password',
           type: 'password',
         },
       },
-
       async authorize(credentials) {
-        if (
-          !credentials?.email ||
-          !credentials?.password
-        ) {
+        // ✅ validate
+        if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
         const adminName = process.env.ADMIN_NAME;
-        console.log("--- DEBUG AUTH ---");
-       console.log("Input Email:", credentials.email, " | Env Email:", adminEmail);
-  console.log("Input Pass:", credentials.password, " | Env Pass:", adminPassword);
-  console.log("------------------");
+
+        if (!adminEmail || !adminPassword) {
+          console.error('Admin credentials not set in .env');
+          return null;
+        }
+
+        // ✅ compare
         if (
-          credentials.email !==adminEmail ||
+          credentials.email !== adminEmail ||
           credentials.password !== adminPassword
         ) {
           return null;
@@ -44,13 +45,14 @@ export const {
 
         return {
           id: '1',
-          email: String(adminEmail),
-          name: String(adminName),
+          email: adminEmail,
+          name: adminName ?? 'Admin',
         };
       },
     }),
   ],
-callbacks: {
+
+  callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.name = user.name;
@@ -60,16 +62,17 @@ callbacks: {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
       }
       return session;
     },
   },
+
   session: {
     strategy: 'jwt',
-    maxAge:2*24*60*60,
-    updateAge:24*60*60
+    maxAge: 2*24*60*60,   // 2 days
+    updateAge: 24 * 60 * 60,     // 1 day
   },
 
   pages: {
@@ -77,6 +80,5 @@ callbacks: {
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-
   trustHost: true,
 });

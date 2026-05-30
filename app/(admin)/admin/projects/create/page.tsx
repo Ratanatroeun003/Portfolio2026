@@ -23,7 +23,9 @@ export default function CreateProjectPage() {
   const handleRemoveImage = () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -66,7 +68,6 @@ export default function CreateProjectPage() {
               className="w-full bg-gray-900 border border-white/10 focus:border-blue-500 outline-none rounded-xl p-3 text-white transition"
             />
           </div>
-
           {/* Tech Stack / Description */}
           <div>
             <label className="block text-sm text-gray-400 mb-1.5 font-medium">
@@ -107,12 +108,22 @@ export default function CreateProjectPage() {
             </div>
           </div>
 
-          {/* Image Upload Component */}
+          {/* 🔑 ផ្នែកកូដ Project Thumbnail ដែលបានកែសម្រួលរួចរាល់ */}
           <div>
             <label className="block text-sm text-gray-400 mb-1.5 font-medium">
               Project Thumbnail *
             </label>
             <div className="mt-1 flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl p-4 bg-gray-900/30 hover:bg-gray-900/60 transition relative overflow-hidden min-h-48">
+              {/* 🌟 គន្លឹះ៖ ដាក់ <input> នៅទីនេះ ដើម្បីឱ្យវាឈរជើងក្នុង Form ជានិច្ច ទោះបីជាលាក់ Preview ក៏ដោយ */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                name="image"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+
               {previewUrl ? (
                 <div className="relative w-full h-full min-h-40 flex flex-col gap-3">
                   <img
@@ -129,7 +140,12 @@ export default function CreateProjectPage() {
                   </button>
                 </div>
               ) : (
-                <label className="cursor-pointer flex flex-col items-center justify-center gap-2 py-8 w-full text-gray-400">
+                /* 👆 ពេលនេះប៊ូតុង Click ខាងក្រោមនឹងទៅកេះ trigger input file ដែលនៅខាងលើដោយស្វ័យប្រវត្ត */
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex flex-col items-center justify-center gap-2 py-8 w-full text-gray-400"
+                >
                   <div className="p-3 bg-gray-800 rounded-xl border border-white/5 text-blue-400">
                     <ImagePlus size={26} />
                   </div>
@@ -139,15 +155,7 @@ export default function CreateProjectPage() {
                   <span className="text-xs text-gray-500">
                     Supports PNG, JPG, JPEG up to 5MB
                   </span>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    name="image" // 🔑 ត្រូវតែមាន name="image" ដើម្បីឱ្យ Server ចាប់យក File ឆៅបាន
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
-                  />
-                </label>
+                </button>
               )}
             </div>
           </div>
