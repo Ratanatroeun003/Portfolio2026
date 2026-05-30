@@ -76,7 +76,7 @@ export const {
   },
 
   pages: {
-    signIn: '/login',
+    signIn: '/auth',
   },
 
   secret: process.env.NEXTAUTH_SECRET,
