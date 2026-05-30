@@ -17,7 +17,6 @@ services:
       ADMIN_NAME: RATANA
     depends_on:
       - mysql
-
   mysql:
     image: mysql:8.4
     container_name: next_mysql

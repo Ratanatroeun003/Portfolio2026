@@ -108,7 +108,9 @@ const Navbar = ({ session }: NavbarProps) => {
 
         {/* Logout */}
         <button
-          onClick={() => signOut({ callbackUrl: '/auth' })}
+          onClick={async () =>
+            await signOut({ redirect: true, callbackUrl: '/auth' })
+          }
           className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 py-3 rounded-xl text-white transition-colors w-full"
         >
           <LogOut size={18} />
