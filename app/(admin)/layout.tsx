@@ -1,4 +1,5 @@
 import Navbar from '@/components/admin/Navbar';
+import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 export default async function AdminLayout({
   children,
@@ -6,6 +7,9 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
+  if (!session) {
+    redirect('/login');
+  }
   return (
     <div className="flex min-h-screen bg-gray-900">
       <Navbar session={session} />
