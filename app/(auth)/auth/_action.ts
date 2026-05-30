@@ -1,5 +1,5 @@
 'use server';
-
+import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 type LoginErrors = {
@@ -37,8 +37,8 @@ export const login = async (
     }
     throw error;
   }
-  return null;
+ redirect("/admin/dashboard");
 };
 export const logout = async () => {
-  await signOut({ redirectTo: '/auth' });
+  await signOut({ redirect:false });
 };
