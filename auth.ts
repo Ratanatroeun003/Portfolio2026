@@ -51,7 +51,18 @@ export const {
       },
     }),
   ],
-
+trustHost: true,
+cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === "production" ? `__Secure-authjs.session-token` : `authjs.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production", // ប្រើ True តែនៅលើ HTTPS Vercel ទេ
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -80,5 +91,5 @@ export const {
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-  trustHost: true,
+
 });
