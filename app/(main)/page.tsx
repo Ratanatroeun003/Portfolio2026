@@ -3,7 +3,7 @@ import About from '@/components/About';
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import ScrollAnimation from '@/components/ScrollAnimation';
-
+export const dynamic = 'force-dynamic';
 export default function Home() {
   return (
     <main className="bg-gray-900 text-white overflow-hidden">

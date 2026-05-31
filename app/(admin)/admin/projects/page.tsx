@@ -5,7 +5,6 @@ const ProjectsPage = async () => {
   const data = await prisma.project.findMany({
     orderBy: { createdAt: 'desc' },
   });
-
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -21,7 +20,6 @@ const ProjectsPage = async () => {
           + New Project
         </Link>
       </div>
-
       {/* Table */}
       <ProjectList data={data} />
     </div>

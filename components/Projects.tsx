@@ -7,7 +7,6 @@ export default async function Projects() {
   const projects = await prisma.project.findMany({
     orderBy: { createdAt: 'desc' },
   });
-
   return (
     <section
       id="projects"
@@ -23,8 +22,6 @@ export default async function Projects() {
         </p>
         <div className="w-16 h-1 bg-blue-400 rounded-full mx-auto mt-4" />
       </div>
-
-      {/* Grid */}
       <div className="max-w-6xl mx-auto w-full">
         {projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-20">
@@ -72,7 +69,6 @@ export default async function Projects() {
                   <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
                     {project.title}
                   </h3>
-
                   <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
