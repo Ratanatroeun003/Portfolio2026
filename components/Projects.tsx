@@ -2,7 +2,7 @@
 import { prisma } from '@/lib/prisma';
 import { Code, ExternalLink, FolderOpen, FolderKanban } from 'lucide-react';
 import Image from 'next/image';
-
+export const dynamic = 'force-dynamic';
 export default async function Projects() {
   const projects = await prisma.project.findMany({
     orderBy: { createdAt: 'desc' },
