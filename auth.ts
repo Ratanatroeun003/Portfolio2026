@@ -1,7 +1,6 @@
 // auth.ts
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-
 export const {
   handlers,
   auth,
@@ -21,11 +20,9 @@ export const {
         },
       },
       async authorize(credentials) {
-        // ✅ validate
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
         const adminName = process.env.ADMIN_NAME;
@@ -34,15 +31,12 @@ export const {
           console.error('Admin credentials not set in .env');
           return null;
         }
-
-        // ✅ compare
         if (
           credentials.email !== adminEmail ||
           credentials.password !== adminPassword
         ) {
           return null;
         }
-
         return {
           id: '1',
           email: adminEmail,
@@ -59,7 +53,7 @@ cookies: {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production", // ប្រើ True តែនៅលើ HTTPS Vercel ទេ
+        secure: process.env.NODE_ENV === "production",
       },
     },
   },
@@ -79,11 +73,10 @@ cookies: {
       return session;
     },
   },
-
   session: {
     strategy: 'jwt',
-    maxAge: 2*24*60*60,   // 2 days
-    updateAge: 24 * 60 * 60,     // 1 day
+    maxAge: 2*24*60*60, 
+    updateAge: 24 * 60 * 60,   
   },
 
   pages: {

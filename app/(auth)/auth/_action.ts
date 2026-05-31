@@ -40,5 +40,9 @@ export const login = async (
  redirect("/admin/dashboard");
 };
 export const logout = async () => {
-  await signOut({ redirect:false });
+  await signOut({
+    redirect: false,
+  });
+
+  redirect("/auth");
 };
