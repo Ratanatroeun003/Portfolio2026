@@ -4,12 +4,9 @@ import { useState, useRef, useActionState, ChangeEvent } from 'react';
 import { ImagePlus, Loader2, ArrowLeft, Globe, Code } from 'lucide-react';
 import Link from 'next/link';
 import { createProjects } from '@/app/(admin)/admin/projects/_action';
-
 export default function CreateProjectPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  // 🚀 ហៅប្រើ useActionState ធម្មតា ដោយមិនបាច់មាន fetch() ឬ useEffect អ្វីទាំងអស់
   const [state, formAction, isPending] = useActionState(createProjects, null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +50,6 @@ export default function CreateProjectPage() {
           </div>
         )}
 
-        {/* 🔑 ទិន្នន័យទាំងអស់ក្នុង Form នេះនឹងត្រូវបាញ់ទៅកាន់ Server ក្នុងពេលតែមួយ */}
         <form action={formAction} className="space-y-5">
           {/* Title */}
           <div>

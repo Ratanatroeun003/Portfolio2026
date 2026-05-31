@@ -37,12 +37,11 @@ export const login = async (
     }
     throw error;
   }
- redirect("/admin/dashboard");
+return null;
 };
 export const logout = async () => {
   await signOut({
     redirect: false,
   });
-
   redirect("/auth");
 };

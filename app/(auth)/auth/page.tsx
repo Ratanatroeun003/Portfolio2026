@@ -5,7 +5,7 @@ import { useActionState } from 'react';
 import { Mail, Lock, LogIn } from 'lucide-react';
 
 export default function LoginPage() {
-  const [state, formAction, isPadding] = useActionState(login, null);
+  const [state, formAction, isPending] = useActionState(login, null);
   return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4">
       {/* Glow */}
@@ -70,10 +70,10 @@ export default function LoginPage() {
           {/* Button */}
           <button
             type="submit"
-            disabled={isPadding}
+            disabled={isPending}
             className="mt-2 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 py-3 rounded-xl font-semibold text-white transition-colors"
           >
-            {isPadding ? (
+            {isPending ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Loading...

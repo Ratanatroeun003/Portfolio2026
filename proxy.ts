@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 import type { NextAuthRequest } from 'next-auth';
 const protectedRoutes = ['/admin', '/admin/dashboard', '/admin/projects', '/admin/messages'];
 const publicRoutes = ['/auth', '/']; // ទំព័រលកអ៊ីន និងទំព័រដើម (Home)
-
 export const proxy = auth(async function proxy(req: NextAuthRequest) {
   const { nextUrl } = req;
   const session = await req.auth; 
@@ -12,8 +11,6 @@ export const proxy = auth(async function proxy(req: NextAuthRequest) {
   const path = nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route));
   const isPublicRoute = publicRoutes.includes(path);
-
-  // 🔐 ករណីទី ១៖ បើជាផ្លូវការពារ (Protected) តែអត់ទាន់លកអ៊ីនទេ -> ដេញទៅ /auth ភ្លាម
   if (isProtectedRoute && !isLoggedIn) {
     const loginUrl = nextUrl.clone();
     loginUrl.pathname = '/auth';
