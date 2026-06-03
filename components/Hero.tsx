@@ -14,7 +14,6 @@ export default function Hero() {
       id="home"
       className="min-h-screen flex flex-col pt-16 md:flex-row items-center justify-between gap-8"
     >
-      {/* Profile Image - ផ្នែកឆ្វេង */}
       <motion.div
         initial={{ opacity: 0, x: -60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -22,14 +21,12 @@ export default function Hero() {
         className="w-full md:w-1/2 flex items-center justify-center min-h-[40vh] md:min-h-screen"
       >
         <div className="relative group">
-          {/* Bottom Right Border */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
             className="absolute -bottom-4 -right-4 w-full h-full border-r-4 border-b-4 border-blue-500 rounded-br-[40px] transition-all duration-500 group-hover:-bottom-2 group-hover:-right-2"
           />
-
           {/* Image */}
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -47,8 +44,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </motion.div>
-
-      {/* Text Content - ផ្នែកស្តាំ */}
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -84,8 +79,6 @@ export default function Hero() {
         >
           Full Stack Developer | Next.js | React | MySQL
         </motion.p>
-
-        {/* Divider */}
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: 64 }}

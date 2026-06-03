@@ -9,8 +9,7 @@ import {
   X,
   ShieldUser,
 } from 'lucide-react';
-import Link from 'next/link'; // 🔑 ត្រូវ import នេះដើម្បីធ្វើលីងទៅកាន់ទំព័រ admin
-
+import Link from 'next/link';
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'about', label: 'About', icon: User },
@@ -21,8 +20,6 @@ const navItems = [
 export default function Navbar() {
   const [active, setActive] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // ពិនិត្យ Section ណាដែល Active
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -50,17 +47,13 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 w-full border-b border-blue-500/30 bg-gray-900/90 backdrop-blur-sm text-white z-50">
-      {/* កំណត់ទំហំរត់កណ្តាលអេក្រង់ធំ */}
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* 🏷️ ១. Logo ផ្នែកខាងឆ្វេង */}
         <button
           onClick={() => scrollTo('home')}
           className="text-xl font-bold bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent hover:opacity-80 transition"
         >
           My Portfolio
         </button>
-
-        {/* 💻 ២. ម៉ឺនុយសម្រាប់អេក្រង់កុំព្យូទ័រ (Desktop Menu) */}
         <div className="hidden md:flex items-center gap-6">
           <div className="flex gap-1">
             {navItems.map(({ id, label, icon: Icon }) => (
@@ -78,8 +71,6 @@ export default function Navbar() {
               </button>
             ))}
           </div>
-
-          {/* 🔑 ប៊ូតុង Admin សម្រាប់អេក្រង់ Desktop (លេងម៉ូត Icon ស្រស់ស្អាត) */}
           <Link
             href="/admin/dashboard"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300"
@@ -105,8 +96,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-
-      {/* 📱 ៤. ផ្ទាំងទម្លាក់ចុះលើទូរស័ព្ទ (Mobile Menu Dropdown) */}
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
           menuOpen
@@ -129,8 +118,6 @@ export default function Navbar() {
               <span>{label}</span>
             </button>
           ))}
-
-          {/* បន្ថែមលីង Admin មួយជួរទៀតក្នុង Mobile Menu ដើម្បីឱ្យងាយស្រួលចុច */}
           <Link
             href="/admin/dashboard"
             onClick={() => setMenuOpen(false)}

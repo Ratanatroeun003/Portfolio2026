@@ -1,20 +1,17 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Fasthand, Google_Sans } from 'next/font/google';
 import './globals.css';
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+
+export const googleSans = Google_Sans({
+  variable: '--font-google-sans',
   subsets: ['latin'],
+  weight: ['400', '500', '700'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+export const fasthand = Fasthand({
+  variable: '--font-fasthand',
+  subsets: ['khmer'],
+  weight: ['400'],
 });
-
-export const metadata: Metadata = {
-  title: 'My Portfolio',
-  description: 'Developer Portfolio',
-};
 
 export default function RootLayout({
   children,
@@ -24,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${fasthand.variable} ${googleSans.variable} h-full antialiased`}
     >
       <body>
         <main className="flex-1">{children}</main>

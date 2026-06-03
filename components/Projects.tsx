@@ -2,7 +2,6 @@
 import { prisma } from '@/lib/prisma';
 import { Code, ExternalLink, FolderOpen, FolderKanban } from 'lucide-react';
 import Image from 'next/image';
-export const dynamic = 'force-dynamic';
 export default async function Projects() {
   const projects = await prisma.project.findMany({
     orderBy: { createdAt: 'desc' },
@@ -26,7 +25,7 @@ export default async function Projects() {
         {projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 py-20">
             <FolderOpen size={60} className="text-gray-600" />
-            <p className="text-gray-500 text-lg">គ្មាន Project នៅឡើយ</p>
+            <p className="text-gray-500 text-lg">No project</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -57,7 +56,7 @@ export default async function Projects() {
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className=" object-contain w-full group-hover:scale-105 transition-transform duration-500"
-                      priority
+                      priority={false}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

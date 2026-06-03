@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import EditProjectForm from '@/components/admin/EditProjectForm';
 
-import { updateProject } from '../../_action';
+import { updateProject } from '@/app/actions/project';
 
 type Props = {
   params: Promise<{
@@ -17,7 +17,7 @@ const EditProjectPage = async ({ params }: Props) => {
 
   const project = await prisma.project.findUnique({
     where: {
-      id: Number(id),
+      id: id,
     },
   });
 

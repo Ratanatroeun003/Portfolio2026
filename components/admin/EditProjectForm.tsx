@@ -2,11 +2,11 @@
 
 import { useRef, useState, ChangeEvent, useActionState } from 'react';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react'; // 💡 បន្ថែម Icon loading ឱ្យកាន់តែស្អាត
+import { Loader2 } from 'lucide-react';
 
 type Props = {
   project: {
-    id: number;
+    id: string;
     title: string;
     description: string;
     image: string;
@@ -24,7 +24,6 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      // 💡 សម្អាត URL ចាស់ចោលបើមានការប្តូរចុះឡើង ការពារ Memory Leak លើ Browser
       if (preview && preview !== project.image) {
         URL.revokeObjectURL(preview);
       }
@@ -35,21 +34,16 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* ⚠️ បង្ហាញផ្ទាំង Error មកកាន់ User ប្រសិនបើការ Update ជួបបញ្ហា */}
       {state?.error && (
         <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-xl text-center">
           {state.error}
         </div>
       )}
-
-      {/* 🔑 ប្តូរពី action={updateProject} មកប្រើ action={formAction} វិញ */}
       <form
         action={formAction}
         className="bg-gray-800 border border-white/10 rounded-2xl p-6 flex flex-col gap-5"
       >
         <input type="hidden" name="id" value={project.id} />
-
-        {/* Title */}
         <div>
           <label className="block text-sm text-gray-300 mb-2">
             Project Title
@@ -62,8 +56,6 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
             className="w-full bg-gray-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500"
           />
         </div>
-
-        {/* Description */}
         <div>
           <label className="block text-sm text-gray-300 mb-2">
             Description
@@ -76,13 +68,10 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
             className="w-full bg-gray-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 resize-none"
           />
         </div>
-
-        {/* Image */}
         <div>
           <label className="block text-sm text-gray-300 mb-2">
             Project Image
           </label>
-
           <div
             onClick={() => !isPending && fileRef.current?.click()} // រារាំងមិនឱ្យចុចដូររូបពេលកំពុង Upload
             className="w-40 h-40 rounded-xl overflow-hidden bg-gray-700 border border-white/10 cursor-pointer relative group"
@@ -106,7 +95,6 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
               </div>
             )}
           </div>
-
           <input
             ref={fileRef}
             type="file"
@@ -117,8 +105,6 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
             disabled={isPending}
           />
         </div>
-
-        {/* Github */}
         <div>
           <label className="block text-sm text-gray-300 mb-2">GitHub URL</label>
           <input
@@ -128,8 +114,6 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
             className="w-full bg-gray-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500"
           />
         </div>
-
-        {/* Demo */}
         <div>
           <label className="block text-sm text-gray-300 mb-2">Demo URL</label>
           <input
@@ -139,11 +123,9 @@ const EditProjectForm = ({ project, updateProject }: Props) => {
             className="w-full bg-gray-900 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500"
           />
         </div>
-
-        {/* Submit Button */}
         <button
           type="submit"
-          disabled={isPending} // 🔑 បិទមិនឱ្យចុចឌុបពេលកំពុងដំណើរការ
+          disabled={isPending}
           className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/40 transition-colors text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2"
         >
           {isPending ? (

@@ -8,7 +8,7 @@ datasource db {
   relationMode = "prisma"
 }
 model Project {
-  id          Int      @id @default(autoincrement())
+  id        String   @id @default(uuid()) 
   title       String
   description String
   image       String
@@ -17,12 +17,11 @@ model Project {
   createdAt   DateTime @default(now())
 }
 model Message {
-  id        Int      @id @default(autoincrement())
+ id        String   @id @default(uuid()) 
   name      String
   email     String
   body      String   @db.Text
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
-
   @@map("messages")
 }

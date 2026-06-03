@@ -1,6 +1,6 @@
 'use client';
 
-import { login } from './_action';
+import { login } from '@/app/actions/auth';
 import { useActionState } from 'react';
 import { Mail, Lock, LogIn } from 'lucide-react';
 

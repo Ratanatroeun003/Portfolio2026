@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { Mail, MailOpen, Trash2, Clock } from 'lucide-react';
-import { deleteMessage, markAsRead } from './_actions/message'; // ✅ uncomment
+import { Mail, Clock } from 'lucide-react';
+
+import BtnMessage from '@/components/admin/BtnMessage';
 
 export default async function MessagesPage() {
   const messages = await prisma.message.findMany({
@@ -55,12 +56,9 @@ export default async function MessagesPage() {
                   ${!message.read ? 'bg-blue-500/[0.04]' : ''}
                 `}
               >
-                {/* Avatar */}
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30 border border-white/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-white">
                   {message.name.charAt(0).toUpperCase()}
                 </div>
-
-                {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-sm font-semibold text-white">
@@ -68,7 +66,7 @@ export default async function MessagesPage() {
                     </p>
                     {!message.read && (
                       <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">
-                        ថ្មី
+                        New
                       </span>
                     )}
                   </div>
@@ -78,8 +76,6 @@ export default async function MessagesPage() {
                   <p className="text-sm text-gray-400 line-clamp-2">
                     {message.body}
                   </p>
-
-                  {/* Time */}
                   <div className="flex items-center gap-1 mt-2">
                     <Clock size={11} className="text-gray-600" />
                     <p className="text-xs text-gray-600">
@@ -87,32 +83,12 @@ export default async function MessagesPage() {
                     </p>
                   </div>
                 </div>
-
-                {/* Actions */}
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  {/* ✅ Mark as Read */}
-                  {!message.read && (
-                    <form action={markAsRead.bind(null, message.id)}>
-                      <button
-                        type="submit"
-                        className="p-2 text-gray-400 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
-                        title="Mark as read"
-                      >
-                        <MailOpen size={16} />
-                      </button>
-                    </form>
+                  {message.read ? (
+                    <BtnMessage id={message.id} type="delete" />
+                  ) : (
+                    <BtnMessage id={message.id} type="read" />
                   )}
-
-                  {/* ✅ Delete */}
-                  <form action={deleteMessage.bind(null, message.id)}>
-                    <button
-                      type="submit"
-                      className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </form>
                 </div>
               </div>
             ))}

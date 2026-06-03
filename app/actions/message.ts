@@ -1,7 +1,12 @@
 'use server'
 import {prisma} from '@/lib/prisma'
 import  {revalidatePath} from 'next/cache'
-export const createMessage = async (prevState:any,formData:FormData)=>{
+interface ActionResponse {
+    success?:boolean;
+    error?:boolean;
+    message:string;
+}
+export const createMessage = async (prevState:any,formData:FormData):Promise<ActionResponse>=>{
     const email = formData.get('email') as string
     const name = formData.get('name') as string
     const message = formData.get('message') as string
@@ -30,28 +35,38 @@ export const createMessage = async (prevState:any,formData:FormData)=>{
         }
     }
 }
-export const markAsRead = async(id:number)=>{
+export const markAsRead = async(id:string):Promise<ActionResponse>=>{
     try {
         await prisma.message.update({
             where:{id},
             data:{read:true}
         })
         revalidatePath('/admin/message')
+        return {
+            success:true,
+            message:'Marked as read'
+        }
     } catch (error) {
-        console.log('====================================');
-        console.log('error update message');
-        console.log('====================================');
+      return {
+        error:true,
+        message:'Something went wrong!'
+      }
     }
 }
-export const deleteMessage = async (id:number)=>{
+export const deleteMessage = async (id:string):Promise<ActionResponse>=>{
     try {
         await prisma.message.delete({
             where:{id}
         })
         revalidatePath('/admin/message')
+        return {
+            success:true,
+            message:'Message deleted'
+        }
     } catch (err) {
-        console.log('====================================');
-        console.log('error delete message',err);
-        console.log('====================================');
+     return{
+        error:true,        
+        message:'Something went wrong!'
+     }
     }
 }

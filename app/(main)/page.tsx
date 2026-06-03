@@ -11,7 +11,6 @@ export default function Home() {
       <ScrollAnimation direction="left" delay={0}>
         <About />
       </ScrollAnimation>
-
       <ScrollAnimation direction="up" delay={100}>
         <Projects />
       </ScrollAnimation>

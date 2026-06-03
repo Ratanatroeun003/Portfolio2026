@@ -1,5 +1,4 @@
 'use client';
-
 import {
   Edit,
   Trash2,
@@ -8,22 +7,23 @@ import {
   Loader2,
 } from 'lucide-react';
 import type { Project } from '@prisma/client';
-import { deleteProject } from '@/app/(admin)/admin/projects/_action';
+import { deleteProject } from '@/app/actions/project';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
+import Image from 'next/image';
 
 type Props = {
   data: Project[];
 };
 
 const ProjectList = ({ data }: Props) => {
-  // 🔑 ៣. បង្កើត Transition state សម្រាប់គ្រប់គ្រងការ Loading របស់ Server Action
   const [isPending, startTransition] = useTransition();
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const handleDelete = (id: number) => {
-    const isConfirm = confirm();
-
+  const handleDelete = (id: string) => {
+    const isConfirm = confirm(
+      'Are you sure you want to delete this project? This action cannot be undone.',
+    );
     if (isConfirm) {
       setDeletingId(id);
       startTransition(async () => {
@@ -85,14 +85,15 @@ const ProjectList = ({ data }: Props) => {
                     key={project.id}
                     className="hover:bg-white/[0.02] transition-colors"
                   >
-                    {/* Project Name + Image */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {project.image ? (
-                          <img
+                          <Image
                             src={project.image}
                             alt={project.title}
-                            className="w-12 h-12 object-contain rounded-full p-1 border border-white/10 flex-shrink-0"
+                            width={48}
+                            height={48}
+                            className="object-contain w-12 h-12 rounded-full p-1 border border-white/10 flex-shrink-0"
                           />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-gray-700 border border-white/10 flex items-center justify-center flex-shrink-0">
@@ -104,7 +105,6 @@ const ProjectList = ({ data }: Props) => {
                         </span>
                       </div>
                     </td>
-
                     {/* Description */}
                     <td className="px-4 py-4 max-w-[200px]">
                       <p className="text-gray-400 text-xs truncate">

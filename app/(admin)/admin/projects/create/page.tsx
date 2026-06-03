@@ -3,7 +3,7 @@
 import { useState, useRef, useActionState, ChangeEvent } from 'react';
 import { ImagePlus, Loader2, ArrowLeft, Globe, Code } from 'lucide-react';
 import Link from 'next/link';
-import { createProjects } from '@/app/(admin)/admin/projects/_action';
+import { createProjects } from '@/app/actions/project';
 export default function CreateProjectPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -49,7 +49,6 @@ export default function CreateProjectPage() {
             {state.error}
           </div>
         )}
-
         <form action={formAction} className="space-y-5">
           {/* Title */}
           <div>

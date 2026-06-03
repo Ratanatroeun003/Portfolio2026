@@ -1,6 +1,6 @@
 'use client';
-import { useActionState, useState, useEffect } from 'react';
-import { createMessage } from '@/app/(admin)/admin/messages/_actions/message';
+import { useActionState } from 'react';
+import { createMessage } from '@/app/actions/message';
 import {
   Mail,
   Phone,
@@ -11,18 +11,8 @@ import {
 } from 'lucide-react';
 import { BiLogoTelegram } from 'react-icons/bi';
 import { FaFacebookF } from 'react-icons/fa';
-
 export default function Contact() {
   const [state, formAction, isPending] = useActionState(createMessage, null);
-  const [isSent, setIsSent] = useState(false);
-  useEffect(() => {
-    if (state?.success) {
-      setIsSent(true);
-    }
-  }, [state]);
-  const handleResetForm = () => {
-    setIsSent(false);
-  };
   return (
     <section
       id="contact"
@@ -39,10 +29,10 @@ export default function Contact() {
       </div>
       <div className="max-w-5xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="flex flex-col gap-6 justify-center">
-          <h3 className="text-xl sm:text-2xl font-semibold text-white">
+          <h3 className="text-xl sm:text-2xl font-semibold text-white font-fasthand">
             តោះទាក់ទងគ្នា!
           </h3>
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-fasthand">
             ខ្ញុំរីករាយទទួលស្វាគមន៍សំណួរ ឬ ការស្នើសុំសហការគ្រប់ប្រភេទ។
           </p>
 
@@ -131,106 +121,90 @@ export default function Contact() {
             </div>
           </div>
         </div>
-
-        {/* Right - Form */}
         <form
           action={formAction}
           className="bg-gray-800/50 rounded-2xl p-6 sm:p-8"
         >
-          {state?.success ? (
-            <div className="flex flex-col items-center justify-center h-full gap-4 py-12">
-              <CheckCircle size={60} className="text-green-400" />
-              <p className="text-green-400 text-xl font-semibold text-center">
-                បានផ្ញើជោគជ័យ! ✅
-              </p>
-              <p className="text-gray-400 text-sm text-center">
-                ខ្ញុំនឹងឆ្លើយតបក្នុងពេលឆាប់ៗ!
-              </p>
-              <button
-                onClick={handleResetForm}
-                className="mt-4 text-blue-400 hover:text-blue-300 text-sm underline transition-colors"
-              >
-                ផ្ញើម្តងទៀត
-              </button>
+          <div className="flex flex-col gap-4">
+            {state?.error && (
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-xl text-center">
+                {state.message}
+              </div>
+            )}
+            {state?.success && (
+              <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-sm p-3 rounded-xl text-center">
+                <CheckCircle size={48} className="mx-auto" /> {state.message}
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
+                Name
+              </label>
+              <div className="relative">
+                <User
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  name="name"
+                  className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
+                />
+              </div>
             </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {state?.error && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg text-center">
-                  {state.message}
-                </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
+                Email
+              </label>
+              <div className="relative">
+                <Mail
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
+                Message
+              </label>
+              <div className="relative">
+                <MessageSquare
+                  size={16}
+                  className="absolute left-3 top-4 text-gray-500"
+                />
+                <textarea
+                  placeholder="Your message..."
+                  rows={4}
+                  className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all resize-none"
+                  name="message"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={isPending}
+              className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 py-3 rounded-lg font-semibold transition-colors text-white mt-2"
+            >
+              {isPending ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  sending...
+                </>
+              ) : (
+                <>
+                  <Send size={16} />
+                  SEND
+                </>
               )}
-              {/* Name */}
-              <div className="flex flex-col gap-1">
-                <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
-                  Name
-                </label>
-                <div className="relative">
-                  <User
-                    size={16}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    name="name"
-                    className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail
-                    size={16}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="your@email.com"
-                    className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-gray-400 text-xs font-medium uppercase tracking-wider">
-                  Message
-                </label>
-                <div className="relative">
-                  <MessageSquare
-                    size={16}
-                    className="absolute left-3 top-4 text-gray-500"
-                  />
-                  <textarea
-                    placeholder="Your message..."
-                    rows={4}
-                    className="w-full bg-gray-700/50 pl-10 pr-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-500 text-sm transition-all resize-none"
-                    name="message"
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                disabled={isPending}
-                className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 py-3 rounded-lg font-semibold transition-colors text-white mt-2"
-              >
-                {isPending ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    sending...
-                  </>
-                ) : (
-                  <>
-                    <Send size={16} />
-                    SEND
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+            </button>
+          </div>
         </form>
       </div>
     </section>

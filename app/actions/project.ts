@@ -37,7 +37,7 @@ export async function createProjects(prevState: any, formData: FormData) {
   revalidatePath('/admin/projects');
   redirect('/admin/projects');
 }
-export async function deleteProject(id: number) {
+export async function deleteProject(id: string) {
   try {
     await prisma.project.delete({
       where: { id },
@@ -52,7 +52,7 @@ export async function deleteProject(id: number) {
     return { success: true };
 }
 export async function updateProject(prevState: any, formData: FormData) {
-  const id = Number(formData.get('id'));
+  const id = formData.get('id') as string | null;
   const title = formData.get('title') as string | null;
   const description = formData.get('description') as string | null;
   const github = formData.get('github') as string | null;
@@ -70,8 +70,6 @@ export async function updateProject(prevState: any, formData: FormData) {
     
     if (!oldProject) return { error: 'រកមិនឃើញគម្រោងដែលត្រូវកែប្រែឡើយ!' };
     let url = oldProject.image;
-
-    // ☁️ បើមានរូបភាពថ្មី ធ្វើការ Upload ជាន់ពីលើ
     if (file && file.size > 0) {
       url = await uploadToCloudinary(file);
     }
@@ -89,7 +87,6 @@ export async function updateProject(prevState: any, formData: FormData) {
     console.error('Update failed:', error);
     return { error: 'ការកែប្រែទិន្នន័យបានបរាជ័យ!' };
   }
-
   revalidatePath('/admin/projects');
   redirect('/admin/projects');
 }

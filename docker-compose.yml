@@ -6,6 +6,7 @@ services:
     container_name: next-app
     ports:
       - '3000:3000'
+      - '5555:5555'
     volumes:
       - .:/app
       - next_node_modules:/app/node_modules
