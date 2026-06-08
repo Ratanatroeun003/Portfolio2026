@@ -10,7 +10,6 @@ import {
   Globe,
   Terminal,
 } from 'lucide-react';
-
 const skills = [
   { name: 'Next.js', icon: Globe },
   { name: 'React', icon: Code },
